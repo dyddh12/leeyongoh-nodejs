@@ -24,11 +24,14 @@ var app = express()
   });
   var msg = { msg:'' };//io서버와 스프링간의 메세지 전송 담는 변수
   //.on함수는 클라이언트에서 서버로 소켓통신의 이벤트를 대기하는 명령
-  io.on('connection', function(client) {
-    console.log(client.id + ' user 접속됨');
+  io.on('connection', function(socket) {
+    console.log(socket.id + ' user 접속됨');
     io.emit('OnOff', msg);//클라이언트의 소스중 OnOff함수를 실행, msg전송
+
+    //client가 접속을 끊었을때
+    //위 아래 결과 확인은 http://localhost:5000/socket.io/socket.io.js 이 소스를 사용
+    socket.on('disconnect',function() {
+      console.log(socket.id + ' user 접속끊어짐');
+    });
   });
-  //위 아래 결과 확인은 http://localhost:5000/socket.io/socket.io.js 이 소스를 사용
-  io.on('disconnect',function() {
-    console.log(client.id + ' user 접속끊어짐');
-  });
+  
