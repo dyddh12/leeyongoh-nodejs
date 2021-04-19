@@ -26,12 +26,18 @@ var app = express()
   //.on함수는 클라이언트에서 서버로 소켓통신의 이벤트를 대기하는 명령
   io.on('connection', function(socket) {
     console.log(socket.id + ' user 접속됨');
-    io.emit('OnOff', msg);//클라이언트의 소스중 OnOff함수를 실행, msg전송
+    io.emit('OnOff', msg);//스프링의 Model같은역할-접속한 All소켓에 OnOff변수명으로 msg를 보냅니다.
 
     //client가 접속을 끊었을때
     //위 아래 결과 확인은 http://localhost:5000/socket.io/socket.io.js 이 소스를 사용
     socket.on('disconnect',function() {
       console.log(socket.id + ' user 접속끊어짐');
+    });
+    socket.on('OnOff', function(msg) {//1:1통신 받은내용
+      console.log('소켓으로 받은 메세지는 '+msg);
+      if(msg == 'updateRender') {
+        io.emit('OnOff', msg);//1:다 통신으로 보냅니다.
+      }
     });
   });
   
