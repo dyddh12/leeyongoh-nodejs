@@ -8,3 +8,5 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+  // 푸시기능, 챠트 실시간 렌더링 하는 소켓앱 시작
